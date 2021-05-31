@@ -21,7 +21,7 @@
         state: present
     - name: Start the container
       docker_container:
-        name: sunilapp
+        name: neonomicsapp
         image: "sunil4356/neonomicsapp:0.0.1"
         state: started
         published_ports:
