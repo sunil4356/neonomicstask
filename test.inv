@@ -1,0 +1,5 @@
+#define deplyment node.
+[test]
+3.129.9.12 ansible_user=ec2-user
+#18.188.221.101 ansible_user=ec2-user
+#172.28.128.101 ansible_user=root
