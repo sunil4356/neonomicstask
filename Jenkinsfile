@@ -35,7 +35,7 @@ pipeline{
         }
     }
 }
-def getVersio(){
+def getDockerTag(){
     def commitHash = sh script: 'git rev-parse --short HEAD', returnStdout: true
     commitHash
 }
