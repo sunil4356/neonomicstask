@@ -1,6 +1,8 @@
 pipeline{
   agent any
-
+  environment {
+    DOCKER_TAG = getVersion()
+  }
   stages{
     stage('SCM'){
       steps{
@@ -32,4 +34,9 @@ pipeline{
         }
     }
   }
+}
+
+def getVersio(){
+    def commitHash = sh returnStdout: true, script: 'git rev-parse --short HEAD'
+    commitHash
 }
