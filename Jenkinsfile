@@ -36,6 +36,6 @@ pipeline{
     }
 }
 def getVersio(){
-    def commitHash = sh returnStdout: true, script: 'git rev-parse --short HEAD'
+    def commitHash = sh script: 'git rev-parse --short HEAD', returnStdout: true
     commitHash
 }
