@@ -1,9 +1,5 @@
 pipeline{
     agent any
-    environment{
-        DOCKER_TAG = getVersion()
-    }
-    
   stages{
       stage('SCM'){
           steps{
@@ -18,7 +14,7 @@ pipeline{
         }
         stage('Docker Build'){
             steps{
-            sh 'docker build . -t sunil4356/neonomicsapp:${DOCKER_TAG} '
+            sh 'docker build . -t sunil4356/neonomicsapp:0.01 '
         }
         stage('DockerHub Push'){
             steps{
@@ -34,9 +30,4 @@ pipeline{
             }
         }
     }
-}
-def getVersion(){
-    def commitHash = sh returnStdout: true, script: 'git rev-parse --short HEAD'
-    commitHash
-}
 }
