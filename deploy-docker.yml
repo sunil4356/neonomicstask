@@ -1,5 +1,5 @@
 ---
-- hosts: dev
+- hosts: neo
   become: True
   tasks:
     - name: Install python pip
