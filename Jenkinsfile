@@ -17,8 +17,7 @@ pipeline{
     }
     stage('Docker Build'){
         steps{
-            sh 'docker build . -t sunil4356/neonomicsapp:0.0.1 '
-        }
+          sh 'docker build . -t sunil4356/neonomicsapp:${DOCKER_TAG} '
     }
     stage('DockerHub Push'){
         steps{
