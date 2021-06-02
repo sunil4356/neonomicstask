@@ -39,3 +39,4 @@ def getVersio(){
     def commitHash = sh script: 'git rev-parse --short HEAD', returnStdout: true
     commitHash
 }
+}
