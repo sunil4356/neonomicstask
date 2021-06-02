@@ -1,39 +1,39 @@
 pipeline{
-  agent any
-  environment {
-    DOCKER_TAG = getVersion()
-  }
-  stages{
-    stage('SCM'){
-      steps{
-        git credentialsId: 'github', url: 'https://github.com/msunilkumar/neonomicstask.git'
-      }
+    agent any
+    environment{
+        DOCKER_TAG = getVersion()
     }
     
-    stage('Maven Build'){
-        steps{
-            sh "mvn clean compile package"
-        }
-    }
-    stage('Docker Build'){
-        steps{
-          sh 'docker build . -t sunil4356/neonomicsapp:${DOCKER_TAG} '
-    }
-    stage('DockerHub Push'){
-        steps{
-            withCredentials([string(credentialsId: 'docker-hub', variable: 'dockerHubPwd')]) {
-                sh "docker login -u sunil4356 -p ${dockerHubPwd}"
+  stages{
+      stage('SCM'){
+          steps{
+              git credentialsId: 'github', url: 'https://github.com/msunilkumar/neonomicstask.git'
             }
-            sh 'docker push sunil4356/neonomicsapp:0.0.1'
+        }
+        
+        stage('Maven Build'){
+            steps{
+                sh "mvn clean compile package"
+            }
+        }
+        stage('Docker Build'){
+            steps{
+            sh 'docker build . -t sunil4356/neonomicsapp:${DOCKER_TAG} '
+        }
+        stage('DockerHub Push'){
+            steps{
+                withCredentials([string(credentialsId: 'docker-hub', variable: 'dockerHubPwd')]) {
+                    sh "docker login -u sunil4356 -p ${dockerHubPwd}"
+                }
+                sh 'docker push sunil4356/neonomicsapp:0.0.1'
+            }
+        }
+        stage('Docker Deploy'){
+            steps{
+                ansiblePlaybook credentialsId: 'neo-deploy', disableHostKeyChecking: true, installation: 'ansible', inventory: 'neo.inv', playbook: 'deploy-docker.yml'
+            }
         }
     }
-    stage('Docker Deploy'){
-        steps{
-            ansiblePlaybook credentialsId: 'neo-deploy', disableHostKeyChecking: true, installation: 'ansible', inventory: 'neo.inv', playbook: 'deploy-docker.yml'
-        }
-    }
-  }
-}
 }
 def getVersio(){
     def commitHash = sh returnStdout: true, script: 'git rev-parse --short HEAD'
